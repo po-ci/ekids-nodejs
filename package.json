@@ -1,0 +1,48 @@
+{
+  "name": "ekids-nodejs",
+  "version": "1.0.0",
+  "description": "Backend of Ekids in node js",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
+    "start": "NODE_ENV=development nodemon --exec babel-node  server.js",
+    "sequelize-skeleton": "npx sequelize-cli init"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/po-ci/ekids-nodejs.git"
+  },
+  "author": "Cristian Incarnato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/po-ci/ekids-nodejs/issues"
+  },
+  "homepage": "https://github.com/po-ci/ekids-nodejs#readme",
+  "dependencies": {
+    "apollo-boost": "^0.4.3",
+    "apollo-server-express": "^2.6.7",
+    "merge-graphql-schemas": "^1.5.8",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^5.9.4",
+    "sequelize-fixtures": "^1.0.2",
+    "graphql-sequelize": "^9.3.6",
+    "graphql-relay": "^0.6.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "cross-env": "^5.2.0",
+    "faker": "^4.1.0",
+    "lodash.random": "^3.2.0",
+    "lodash.times": "^4.3.2",
+    "nodemon": "^1.19.1",
+    "sequelize-cli": "^5.5.0",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  }
+}

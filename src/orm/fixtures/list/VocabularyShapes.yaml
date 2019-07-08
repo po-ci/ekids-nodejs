@@ -1,0 +1,43 @@
+fixtures:
+  - model: Vocabulary
+    data:
+      en: square
+      es: cuadrado
+      img: square.png
+      enSnd: square.mp3
+      cat: 1
+  - model: Vocabulary
+    data:
+      en: circle
+      es: circulo
+      img: circle.png
+      enSnd: circle.mp3
+      cat: 1
+  - model: Vocabulary
+    data:
+      en: triangle
+      es: triangulo
+      img: triangle.png
+      enSnd: triangle.mp3
+      cat: 1
+  - model: Vocabulary
+    data:
+      en: rectangle
+      es: rectangulo
+      img: rectangle.png
+      enSnd: rectangle.mp3
+      cat: 1
+  - model: Vocabulary
+    data:
+      en: diamond
+      es: diamond
+      img: diamond.png
+      enSnd: diamond.mp3
+      cat: 1
+  - model: Vocabulary
+    data:
+      en: star
+      es: estrella
+      img: star.png
+      enSnd: star.mp3
+      cat: 1
