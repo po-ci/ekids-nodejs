@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const {Op, Sequelize} = require('sequelize')
 const {UserInputError} = require('apollo-server-express');
+const sequelizeValidationsAdapter = require('./../../../helpers/sequelize-validations-adapter')
 
 module.exports = {
     Query: {
@@ -53,17 +54,10 @@ module.exports = {
                 email: email,
                 phone: phone,
             }).catch(Sequelize.ValidationError, function (err) {
-                var errors = []
-                err.errors.forEach(error => {
-                    let i = errors.find(i => i.field == error.path)
-                    if (i) {
-                        i.msgs.push(error.message)
-                    } else {
-                        errors.push({field: error.path, msgs: [error.message]})
-                    }
-                })
+
+                let e =  sequelizeValidationsAdapter(err)
                 throw new UserInputError('Form Arguments invalid', {
-                    err,
+                   e
                 });
             })
         },
