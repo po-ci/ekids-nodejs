@@ -10,6 +10,7 @@ const apolloServer = new ApolloServer({
     context: ({req}) => {
         return {db: db, user: req.user}
     },
+    introspection: true,
     playground: {
         endpoint: `/graphql`,
         settings: {
