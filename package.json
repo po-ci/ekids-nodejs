@@ -4,7 +4,7 @@
   "description": "Backend of Ekids in node js",
   "main": "src/server.js",
   "scripts": {
-    "build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
+    "build": "webpack --entry ./dist/index.js --output-filename bundle.min.js --output-path ./dist/ ",
     "start": "NODE_ENV=development nodemon --exec babel-node  server.js",
     "sequelize-skeleton": "npx sequelize-cli init"
   },
