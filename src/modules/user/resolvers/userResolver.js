@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
-const {Op} = require('sequelize')
+const {Op, Sequelize} = require('sequelize')
+const {UserInputError} = require('apollo-server-express');
 
 module.exports = {
     Query: {
@@ -41,6 +42,8 @@ module.exports = {
 
         },
         createUser: (parent, {username, password, name, email, phone}, {db}, info) => {
+
+
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync(password, salt);
             return db.User.create({
@@ -49,6 +52,19 @@ module.exports = {
                 name: name,
                 email: email,
                 phone: phone,
+            }).catch(Sequelize.ValidationError, function (err) {
+                var errors = []
+                err.errors.forEach(error => {
+                    let i = errors.find(i => i.field == error.path)
+                    if (i) {
+                        i.msgs.push(error.message)
+                    } else {
+                        errors.push({field: error.path, msgs: [error.message]})
+                    }
+                })
+                throw new UserInputError('Form Arguments invalid', {
+                    err,
+                });
             })
         },
         updateUser: (parent, {id, name, email, phone}, {db}, info) =>

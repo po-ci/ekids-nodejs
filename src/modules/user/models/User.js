@@ -7,10 +7,28 @@ module.exports = (sequelize, DataTypes) => {
             initialAutoIncrement: 20,
             primaryKey: true
         },
-        username: {type: DataTypes.STRING(30)},
-        password: {type: DataTypes.STRING(100)},
+        username: {
+            type: DataTypes.STRING(30),
+            unique: {
+                args: true,
+                msg: 'username already in use!'
+            }
+
+        },
+        password: {type: DataTypes.STRING(100),},
         name: {type: DataTypes.STRING(59)},
-        email: {type: DataTypes.STRING(100)},
+        email: {
+            type: DataTypes.STRING(100),
+            validate: {
+                isEmail: {
+                    msg: "Must be a valid email address",
+                },
+            },
+            unique: {
+                args: true,
+                msg: 'Email address already in use!'
+            }
+        },
         phone: {type: DataTypes.STRING(20)},
         avatar: {type: DataTypes.STRING(100)},
     }, {});

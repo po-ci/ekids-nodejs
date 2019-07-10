@@ -2,7 +2,7 @@
   "name": "ekids-nodejs",
   "version": "1.0.0",
   "description": "Backend of Ekids in node js",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "build": "webpack --entry ./app/public/js/index.js --output-filename bundle.min.js --output-path ./app/public/js ",
     "start": "NODE_ENV=development nodemon --exec babel-node  server.js",

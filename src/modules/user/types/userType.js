@@ -8,6 +8,7 @@ module.exports = gql`
         email: String!
         phone: String
         avatar: String
+       
     }
 
     type Query {
@@ -18,9 +19,9 @@ module.exports = gql`
 
     type Mutation {
         auth(username: String!, password:String!): String
-        createUser(username: String!, password:String!, name:String!, email:String!, phone:String): User!
-        updateUser(id: ID!, username: String, name:String, email:String, phone:String): User!
-        deleteUser(id: ID!): User!
+        createUser(username: String!, password:String!, name:String!, email:String!, phone:String): User
+        updateUser(id: ID!, username: String, name:String, email:String, phone:String): User
+        deleteUser(id: ID!): Int!
     }
 
 `

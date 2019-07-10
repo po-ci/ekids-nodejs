@@ -1,10 +1,10 @@
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
-const db = require('./../orm/models')
+const db = require('../db')
 const {ApolloServer} = require(`apollo-server-express`)
 
 
-const schema = new ApolloServer({
+const apolloServer = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
     context: ({req}) => {
@@ -18,4 +18,4 @@ const schema = new ApolloServer({
     }
 });
 
-module.exports = schema
+module.exports = apolloServer

@@ -1,7 +1,7 @@
-const db = require('../models')
+const db = require('../src/db')
 
 
-db.Category.sync({force: true}).then(
+db.Category.sync({force: false}).then(
     () => {
 
         db.sequelize.transaction(async t => {

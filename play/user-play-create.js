@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../src/db')
 
 db.User.sync({force: true}).then(
     () => {

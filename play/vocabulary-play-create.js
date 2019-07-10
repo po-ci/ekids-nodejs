@@ -1,4 +1,4 @@
-const db = require('../models')
+const db = require('../src/db')
 
 
 db.Vocabulary.sync({force: true}).then(() => {
