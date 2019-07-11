@@ -7,7 +7,7 @@ const sequelizeValidationsAdapter = require('./../../../helpers/sequelize-valida
 module.exports = {
     Query: {
         users: (parent, args, {db}, info) => db.User.findAll(),
-        user: (parent, args, {db}, info) => db.User.findById(id),
+        user: (parent, args, {db}, info) => db.User.findByPk(id),
         me: async (parent, args, {db, user}, info) => {
             return db.User.findByPk(user.id)
         },
@@ -54,11 +54,7 @@ module.exports = {
                 email: email,
                 phone: phone,
             }).catch(Sequelize.ValidationError, function (err) {
-
-                let e =  sequelizeValidationsAdapter(err)
-                throw new UserInputError('Form Arguments invalid', {
-                   e
-                });
+                throw new UserInputError('Form Arguments invalid', {inputErrors:  sequelizeValidationsAdapter(err)});
             })
         },
         updateUser: (parent, {id, name, email, phone}, {db}, info) =>

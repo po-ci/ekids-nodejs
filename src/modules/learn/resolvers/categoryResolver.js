@@ -5,7 +5,7 @@ module.exports =  {
 
     Query: {
         categories: (parent, args, {db}, info) => db.Category.findAll(),
-        category: (parent, args, {db}, info) => db.Category.findById(id),
+        category: (parent, args, {db}, info) => db.Category.findByPk(id),
     },
     Mutation: {
         createCategory: (parent, {name, description}, {db}, info) =>

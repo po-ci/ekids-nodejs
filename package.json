@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --entry ./dist/index.js --output-filename bundle.min.js --output-path ./dist/ ",
     "prod": "pm2 start src/server.js",
-    "start": "NODE_ENV=development nodemon --exec babel-node  server.js",
+    "start": "nodemon   src/server.js",
+    "start2": "nodemon --exec babel-node src/server.js",
     "sequelize-skeleton": "npx sequelize-cli init"
   },
   "repository": {

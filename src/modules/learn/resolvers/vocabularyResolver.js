@@ -2,7 +2,7 @@ module.exports =  {
 
     Query: {
         vocabularies: (parent, args, {db}, info) => db.Vocabulary.findAll(),
-        vocabulary: (parent, args, {db}, info) => db.Vocabulary.findById(id),
+        vocabulary: (parent, args, {db}, info) => db.Vocabulary.findByPk(id),
     },
     Mutation: {
         createVocabulary: (parent, {en, es}, {db}, info) =>
