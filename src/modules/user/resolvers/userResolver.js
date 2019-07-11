@@ -30,11 +30,12 @@ module.exports = {
 
             if (user) {
                 if (bcrypt.compareSync(password, user.password)) {
-                    return jsonwebtoken.sign(
+                    let token = jsonwebtoken.sign(
                         {id: user.id, username: user.username, email: user.email, phone: user.phone},
                         process.env.JWT_SECRET,
                         {expiresIn: '1d'}
                     )
+                    return {token: token, user: user}
                 } else {
                     throw new Error('Incorrect password')
                 }
@@ -54,7 +55,7 @@ module.exports = {
                 email: email,
                 phone: phone,
             }).catch(Sequelize.ValidationError, function (err) {
-                throw new UserInputError('Form Arguments invalid', {inputErrors:  sequelizeValidationsAdapter(err)});
+                throw new UserInputError('Form Arguments invalid', {inputErrors: sequelizeValidationsAdapter(err)});
             })
         },
         updateUser: (parent, {id, name, email, phone}, {db}, info) =>
@@ -70,6 +71,17 @@ module.exports = {
                 where: {
                     id: id
                 }
+            }),
+        changePassword: (parent, {id, password}, {db}, info) => {
+            let salt = bcrypt.genSaltSync(10);
+            let hash = bcrypt.hashSync(password, salt);
+            let result =  db.User.update({
+                password: hash,
+            }, {
+                where: {id: id}
             })
+            console.log(result)
+            return result?true:false
+        },
     }
 };

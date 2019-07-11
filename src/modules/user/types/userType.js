@@ -10,6 +10,11 @@ module.exports = gql`
         avatar: String
        
     }
+    
+    type Token {
+        token:String!
+        user: User
+    }
 
     type Query {
         users: [User!]!
@@ -18,10 +23,11 @@ module.exports = gql`
     }
 
     type Mutation {
-        auth(username: String!, password:String!): String
+        auth(username: String!, password:String!): Token
         createUser(username: String!, password:String!, name:String!, email:String!, phone:String): User
         updateUser(id: ID!, username: String, name:String, email:String, phone:String): User
-        deleteUser(id: ID!): Int!
+        deleteUser(id: ID!): Boolean!
+        changePassword(id: ID!, password:String!): Boolean!
     }
 
 `
