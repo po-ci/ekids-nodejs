@@ -72,6 +72,10 @@ module.exports = {
                     id: id
                 }
             }),
+        recoveryPassword: (parent, {email}, {db}) => {
+            //Todo send email
+            return {status: true, message: "Se envio un mail con la nueva contraseña"}
+        },
         changePassword: (parent, {id, password}, {db}, info) => {
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync(password, salt);
