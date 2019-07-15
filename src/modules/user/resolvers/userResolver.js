@@ -13,6 +13,7 @@ module.exports = {
         },
     },
     Mutation: {
+
         async auth(parent, {username, password}, {db}, info) {
 
             let user = await db.User.findOne({
@@ -43,8 +44,8 @@ module.exports = {
 
 
         },
-        createUser: (parent, {username, password, name, email, phone}, {db}, info) => {
 
+        createUser: (parent, {username, password, name, email, phone}, {db}, info) => {
 
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync(password, salt);
@@ -58,6 +59,7 @@ module.exports = {
                 throw new UserInputError('Form Arguments invalid', {inputErrors: sequelizeValidationsAdapter(err)});
             })
         },
+
         updateUser: (parent, {id, name, email, phone}, {db}, info) =>
             db.User.update({
                 name: name,
@@ -66,26 +68,40 @@ module.exports = {
             }, {
                 where: {id: id}
             }),
+
         deleteUser: (parent, {id}, {db}, info) =>
             db.User.destroy({
                 where: {
                     id: id
                 }
             }),
+
         recoveryPassword: (parent, {email}, {db}) => {
             //Todo send email
             return {status: true, message: "Se envio un mail con la nueva contraseña"}
         },
-        changePassword: (parent, {id, password}, {db}, info) => {
-            let salt = bcrypt.genSaltSync(10);
-            let hash = bcrypt.hashSync(password, salt);
-            let result =  db.User.update({
-                password: hash,
-            }, {
-                where: {id: id}
-            })
-            console.log(result)
-            return result?true:false
-        },
+
+        changePassword: (parent, {password, passwordVerify}, {db,user}, info) => {
+
+            if (password == passwordVerify) {
+
+                let salt = bcrypt.genSaltSync(10);
+                let hash = bcrypt.hashSync(password, salt);
+                let result = db.User.update({
+                    password: hash,
+                }, {
+                    where: {id: user.id}
+                })
+
+                if (result) {
+                    return {status: true, message: "Password modificada con exito"}
+                } else {
+                    return {status: false, message: "Falla al intentar modificar password"}
+                }
+
+            } else {
+                return {status: false, message: "Las password no concuerdan"}
+            }
+        }
     }
-};
+}
