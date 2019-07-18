@@ -1,0 +1,13 @@
+fixtures:
+  - model: Role
+    data:
+      id: 1
+      name: administrador
+  - model: Role
+    data:
+      id: 2
+      name: supervisor
+  - model: Role
+    data:
+      id: 3
+      name: user

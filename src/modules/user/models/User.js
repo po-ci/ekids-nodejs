@@ -4,9 +4,10 @@ module.exports = (sequelize, DataTypes) => {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
-            initialAutoIncrement: 20,
+            initialAutoIncrement: 1,
             primaryKey: true
         },
+        active: {type: DataTypes.BOOLEAN},
         username: {
             type: DataTypes.STRING(30),
             unique: {
@@ -32,9 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         phone: {type: DataTypes.STRING(20)},
         avatar: {type: DataTypes.STRING(100)},
         avatarurl: {type: DataTypes.STRING(120)},
+
     }, {});
     User.associate = function (models) {
-        // associations can be defined here
+        User.belongsTo(models.Role,{as: "role", foreignKey: "role_id"});
     };
     User.options.initialAutoIncrement = 1;
     User.options.tableName = "users"

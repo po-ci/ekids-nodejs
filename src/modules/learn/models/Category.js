@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {sequelize, modelName: 'Category', tableName: "categories"});
 
     Category.associate = function (models) {
-        Category.hasMany(models.Vocabulary, {as: "Vocabularies", foreignKey: "category_id"});
+        Category.hasMany(models.Vocabulary, {as: "vocabularies", foreignKey: "category_id"});
     }
 
 

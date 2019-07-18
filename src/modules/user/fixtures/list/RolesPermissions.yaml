@@ -1,0 +1,21 @@
+fixtures:
+  - model: RolesPermissions
+    data:
+      id: 1
+      roleId: 1
+      permissionId: 1
+  - model: RolesPermissions
+    data:
+      id: 2
+      roleId: 1
+      permissionId: 2
+  - model: RolesPermissions
+    data:
+      id: 3
+      roleId: 1
+      permissionId: 3
+  - model: RolesPermissions
+    data:
+      id: 4
+      roleId: 1
+      permissionId: 4

@@ -1,0 +1,17 @@
+fixtures:
+  - model: Permission
+    data:
+      id: 1
+      name: leer:usuarios
+  - model: Permission
+    data:
+      id: 2
+      name: modificar:usuarios
+  - model: Permission
+    data:
+      id: 3
+      name: crear:usuarios
+  - model: Permission
+    data:
+      id: 4
+      name: borrar:usuarios
