@@ -11,8 +11,21 @@ module.exports = gql`
         phone: String
         avatar: String
         avatarurl: String
+        role: Role
 
     }
+
+    type Role {
+        id: ID!
+        name: String!
+        permissions: [Permission]
+    }
+
+    type Permission {
+        id: ID!
+        name: String!
+    }
+
 
     type Token {
         token:String!
@@ -23,6 +36,10 @@ module.exports = gql`
         users: [User!]!
         user(id: ID!): User
         me: User
+        roles: [Role]
+        role(id:ID!): Role
+        permissions: [Permission]
+        permission(id:ID!): Permission
     }
 
     type RecoverPasswordResponse{

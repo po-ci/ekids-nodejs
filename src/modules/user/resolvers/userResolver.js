@@ -10,10 +10,28 @@ const randomstring = require('./../../../helpers/randomstring')
 module.exports = {
     Query: {
         users: (parent, args, {db}, info) => db.User.findAll(),
-        user: (parent, args, {db}, info) => db.User.findByPk(id),
+        user: (parent, {id}, {db}, info) => db.User.findByPk(id),
         me: async (parent, args, {db, user}, info) => {
             return db.User.findByPk(user.id)
         },
+        roles: (parent, args, {db}, info) => db.Role.findAll({
+            include: [{
+                model: db.Permission,
+                as: 'permissions',
+                required: false,
+                attributes: ['id', 'name'],
+            }]
+        }),
+        role: (parent, {id}, {db}, info) => db.Role.findByPk(id,{
+            include: [{
+                model: db.Permission,
+                as: 'permissions',
+                required: false,
+                attributes: ['id', 'name'],
+            }]
+        }),
+        permissions: (parent, args, {db}, info) => db.Permission.findAll(),
+        permission: (parent, args, {db}, info) => db.Permission.findByPk(id),
     },
     Mutation: {
 
@@ -104,7 +122,7 @@ module.exports = {
             rs.pipe(wstream);
 
             const rand = randomstring(3)
-            const url = process.env.HOST + "/img/avatar/" + finalFileName + "?"+rand
+            const url = process.env.HOST + "/img/avatar/" + finalFileName + "?" + rand
 
 
             db.User.update({
