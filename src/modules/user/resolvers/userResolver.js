@@ -3,6 +3,9 @@ const jsonwebtoken = require('jsonwebtoken')
 const {Op, Sequelize} = require('sequelize')
 const {UserInputError} = require('apollo-server-express');
 const sequelizeValidationsAdapter = require('./../../../helpers/sequelize-validations-adapter')
+const fs = require('fs')
+const path = require('path')
+const randomstring = require('./../../../helpers/randomstring')
 
 module.exports = {
     Query: {
@@ -32,7 +35,13 @@ module.exports = {
             if (user) {
                 if (bcrypt.compareSync(password, user.password)) {
                     let token = jsonwebtoken.sign(
-                        {id: user.id, username: user.username, email: user.email, phone: user.phone},
+                        {
+                            id: user.id,
+                            username: user.username,
+                            email: user.email,
+                            phone: user.phone,
+                            avatarurl: user.avatarurl
+                        },
                         process.env.JWT_SECRET,
                         {expiresIn: '1d'}
                     )
@@ -81,7 +90,35 @@ module.exports = {
             return {status: true, message: "Se envio un mail con la nueva contraseña"}
         },
 
-        changePassword: (parent, {password, passwordVerify}, {db,user}, info) => {
+        avatarUpload: async (parent, {file}, {db, user}) => {
+
+            const {filename, mimetype, encoding, createReadStream} = await file;
+
+
+            const parseFileName = path.parse(filename);
+            const finalFileName = user.username + parseFileName.ext
+
+            const rs = createReadStream()
+            const dst = path.join("public", "img", "avatar", finalFileName)
+            var wstream = fs.createWriteStream(dst);
+            rs.pipe(wstream);
+
+            const rand = randomstring(3)
+            const url = process.env.HOST + "/img/avatar/" + finalFileName + "?"+rand
+
+
+            db.User.update({
+                avatar: finalFileName,
+                avatarurl: url
+            }, {
+                where: {id: user.id}
+            })
+
+
+            return {filename, mimetype, encoding, url};
+        },
+
+        changePassword: (parent, {password, passwordVerify}, {db, user}, info) => {
 
             if (password == passwordVerify) {
 
