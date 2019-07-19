@@ -14,11 +14,11 @@ const apolloServer = new ApolloServer({
         const { extensions, message } = errors;
 
 
-        if(extensions.exception.inputError){
+        if(extensions.exception.inputErrors){
             return {
                 code: extensions.code,
                 message: message,
-                inputErrors: extensions.exception.inputError
+                inputErrors: extensions.exception.inputErrors
             }
         }
 

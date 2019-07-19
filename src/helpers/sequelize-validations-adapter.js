@@ -19,10 +19,10 @@ module.exports.errorList = (err) => {
     err.errors.forEach(error => {
         let i = errors.find(i => i.field == error.path)
         if (i) {
-            i.msgs.push(error.message)
+            i.messages.push(error.message)
         } else {
-            errors.push({field: error.path, msgs: [error.message]})
+            errors.push({field: error.path, messages: [error.message]})
         }
     })
-    return {inputError: errors}
+    return {inputErrors: errors}
 }
