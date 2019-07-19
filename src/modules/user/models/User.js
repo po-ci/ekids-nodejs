@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
         active: {type: DataTypes.BOOLEAN},
         username: {
             type: DataTypes.STRING(30),
+            allowNull: false,
+            validate: {
+                notEmpty: {msg: "Username no puede estar vacio"}
+            },
             unique: {
                 args: true,
                 msg: 'username already in use!'
@@ -22,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(100),
             validate: {
                 isEmail: {
-                    msg: "Must be a valid email address",
+                    msg: "Email: Debe ser una dirección de email valida",
                 },
             },
             unique: {

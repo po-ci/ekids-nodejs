@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const {Op, Sequelize} = require('sequelize')
 const {UserInputError} = require('apollo-server-express');
-const sequelizeValidationsAdapter = require('./../../../helpers/sequelize-validations-adapter')
+const {errorList,errorMessage} = require('./../../../helpers/sequelize-validations-adapter')
 const fs = require('fs')
 const path = require('path')
 const randomstring = require('./../../../helpers/randomstring')
@@ -72,7 +72,7 @@ module.exports = {
 
         },
 
-        createUser: (parent, {username, password, name, email, phone}, {db}, info) => {
+        createUser: (parent, {username, password, name, email, phone, role, active}, {db}, info) => {
 
             let salt = bcrypt.genSaltSync(10);
             let hash = bcrypt.hashSync(password, salt);
@@ -82,8 +82,10 @@ module.exports = {
                 name: name,
                 email: email,
                 phone: phone,
+                active: active,
+                role: role
             }).catch(Sequelize.ValidationError, function (err) {
-                throw new UserInputError('Form Arguments invalid', {inputErrors: sequelizeValidationsAdapter(err)});
+                throw new UserInputError(errorMessage(err), errorList(err));
             })
         },
 
@@ -94,6 +96,8 @@ module.exports = {
                 phone: phone,
             }, {
                 where: {id: id}
+            }).catch(Sequelize.ValidationError, function (err) {
+                throw new UserInputError(errorMessage(err), errorList(err));
             }),
 
         deleteUser: (parent, {id}, {db}, info) =>
@@ -109,7 +113,7 @@ module.exports = {
         },
 
         avatarUpload: async (parent, {file}, {db, user}) => {
-
+            //@TODO validate image size, extension
             const {filename, mimetype, encoding, createReadStream} = await file;
 
 

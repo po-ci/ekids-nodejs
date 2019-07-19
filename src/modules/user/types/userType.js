@@ -12,7 +12,7 @@ module.exports = gql`
         avatar: String
         avatarurl: String
         role: Role
-
+        active: Boolean!
     }
 
     type Role {
@@ -63,8 +63,8 @@ module.exports = gql`
 
         auth(username: String!, password:String!): Token
 
-        createUser(username: String!, password:String!, name:String!, email:String!, phone:String): User
-        updateUser(id: ID!, username: String, name:String, email:String, phone:String): User
+        createUser(username: String!, password:String!, name:String!, email:String!, phone:String, role: Int!, active: Boolean): User
+        updateUser(id: ID!, username: String, name:String, email:String, phone:String, role: Int!, active: Boolean): User
         deleteUser(id: ID!): Boolean!
 
         recoveryPassword(email:String!):RecoverPasswordResponse!

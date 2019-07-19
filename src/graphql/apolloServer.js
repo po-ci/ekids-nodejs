@@ -10,13 +10,25 @@ const apolloServer = new ApolloServer({
     context: ({req}) => {
         return {db: db, user: req.user}
     },
-    formatError: (error) => {
-        if(error.originalError.inputErrors) {
-            return error.originalError
+    formatError: (errors) => {
+        const { extensions, message } = errors;
+
+
+        if(extensions.exception.inputError){
+            return {
+                code: extensions.code,
+                message: message,
+                inputErrors: extensions.exception.inputError
+            }
         }
-        return error
+
+        return {
+            code: extensions.code,
+            message: message
+        }
     },
     introspection: true,
+    debug: true,
     playground: {
         endpoint: `/graphql`,
         settings: {

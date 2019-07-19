@@ -1,9 +1,19 @@
 const {Sequelize} = require('sequelize')
 
+const NEW_LINE = "\n"
+module.exports.errorMessage = (err) => {
 
-module.exports = (err) => {
+    var message = ""
+    err.errors.forEach(error => {
+        message = message + error.message + NEW_LINE;
+    })
 
-    console.log(err)
+    return message
+}
+
+module.exports.errorList = (err) => {
+
+    //console.log(err)
 
     var errors = []
     err.errors.forEach(error => {
@@ -14,5 +24,5 @@ module.exports = (err) => {
             errors.push({field: error.path, msgs: [error.message]})
         }
     })
-    return errors
+    return {inputError: errors}
 }
