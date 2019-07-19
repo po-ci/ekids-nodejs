@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(30),
             allowNull: false,
             validate: {
+                len: {args: [3,30], msg: "Username debe contener entre 3 y 30 caracteres"},
                 notEmpty: {msg: "Username no puede estar vacio"}
             },
             unique: {
@@ -20,14 +21,18 @@ module.exports = (sequelize, DataTypes) => {
             }
 
         },
-        password: {type: DataTypes.STRING(100),},
+        password: {
+            type: DataTypes.STRING(100),
+            validate: {
+                notEmpty: {msg: "Password no puede estar vacio"}
+            },
+        },
         name: {type: DataTypes.STRING(59)},
         email: {
             type: DataTypes.STRING(100),
             validate: {
-                isEmail: {
-                    msg: "Email: Debe ser una dirección de email valida",
-                },
+                isEmail: {msg: "Email Debe ser una dirección de email valida",},
+                notEmpty: {msg: "Email no puede estar vacio"}
             },
             unique: {
                 args: true,
