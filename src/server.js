@@ -1,6 +1,6 @@
 const express = require('express');
 const apolloServer = require('./graphql/apolloServer')
-const authMiddleware = require('./modules/user/middleware/authMiddleware')
+const {jwtAuth,handleAuthError} = require('./modules/user/middleware/authMiddleware')
 
 var app = express();
 
@@ -16,7 +16,9 @@ app.use((req, res, next) => {
 
 
 //AUTH
-app.use(authMiddleware)
+
+app.use(jwtAuth)
+app.use(handleAuthError)
 
 //STATIC IMG
 app.use('/img/avatar',express.static( __dirname + '/../public/img/avatar'));

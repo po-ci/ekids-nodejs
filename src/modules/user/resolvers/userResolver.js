@@ -2,15 +2,29 @@ const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
 const {Op, Sequelize} = require('sequelize')
 const {UserInputError} = require('apollo-server-express');
-const {errorList,errorMessage} = require('./../../../helpers/sequelize-validations-adapter')
+const {errorList, errorMessage} = require('./../../../helpers/sequelize-validations-adapter')
 const fs = require('fs')
 const path = require('path')
 const randomstring = require('./../../../helpers/randomstring')
 
 module.exports = {
     Query: {
-        users: (parent, args, {db}, info) => db.User.findAll(),
-        user: (parent, {id}, {db}, info) => db.User.findByPk(id),
+        users: (parent, args, {db}, info) => db.User.findAll({
+            include: [{
+                model: db.Role,
+                as: 'role',
+                required: false,
+                attributes: ['id', 'name'],
+            }]
+        }),
+        user: (parent, {id}, {db}, info) => db.User.findByPk(id, {
+            include: [{
+                model: db.Role,
+                as: 'role',
+                required: false,
+                attributes: ['id', 'name'],
+            }]
+        }),
         me: async (parent, args, {db, user}, info) => {
             return db.User.findByPk(user.id)
         },
@@ -22,7 +36,7 @@ module.exports = {
                 attributes: ['id', 'name'],
             }]
         }),
-        role: (parent, {id}, {db}, info) => db.Role.findByPk(id,{
+        role: (parent, {id}, {db}, info) => db.Role.findByPk(id, {
             include: [{
                 model: db.Permission,
                 as: 'permissions',
@@ -83,22 +97,55 @@ module.exports = {
                 email: email,
                 phone: phone,
                 active: active,
-                role: role
+                role_id: role
+            }).then(u => {
+                return {
+                    user: db.User.findByPk(u.id, {
+                        include: [{
+                            model: db.Role,
+                            as: 'role',
+                            required: false,
+                            attributes: ['id', 'name'],
+                        }]
+                    })
+                }
             }).catch(Sequelize.ValidationError, function (err) {
                 throw new UserInputError(errorMessage(err), errorList(err));
             })
+
+
         },
 
-        updateUser: (parent, {id, name, email, phone}, {db}, info) =>
-            db.User.update({
-                name: name,
-                email: email,
-                phone: phone,
-            }, {
-                where: {id: id}
-            }).catch(Sequelize.ValidationError, function (err) {
-                throw new UserInputError(errorMessage(err), errorList(err));
-            }),
+        updateUser: (parent, {id, name, username, email, phone, role, active}, {db}, info) => {
+            return db.User.update(
+                {
+                    name: name,
+                    username: username,
+                    email: email,
+                    phone: phone,
+                    role_id: role,
+                    active: active
+                },
+                {
+                    where: {id: id}
+                }
+            ).then(() => {
+                    return {
+                        user: db.User.findByPk(id, {
+                            include: [{
+                                model: db.Role,
+                                as: 'role',
+                                required: false,
+                                attributes: ['id', 'name'],
+                            }]
+                        })
+                    }
+                }
+            ).catch(Sequelize.ValidationError, function (err) {
+                    throw new UserInputError(errorMessage(err), errorList(err));
+                }
+            )
+        },
 
         deleteUser: (parent, {id}, {db}, info) =>
             db.User.destroy({
