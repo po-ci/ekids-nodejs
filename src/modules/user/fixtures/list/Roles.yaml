@@ -2,7 +2,7 @@ fixtures:
   - model: Role
     data:
       id: 1
-      name: administrador
+      name: administrator
   - model: Role
     data:
       id: 2
