@@ -63,6 +63,12 @@ module.exports = gql`
         user: User
     }
 
+    type RegisterUserResponse{
+        status: Boolean!,
+        id: Int!,
+        email: String!
+    }
+
     type UpdateUserResponse{
         user: User
     }
@@ -74,6 +80,8 @@ module.exports = gql`
         createUser(username: String, password:String, name:String, email:String, phone:String, role: Int, active: Boolean): CreateUserResponse
         updateUser(id: ID!, username: String, name:String, email:String, phone:String, role: Int, active: Boolean): UpdateUserResponse
         deleteUser(id: ID!): Boolean!
+
+        registerUser(username: String, password:String, name:String, email:String, phone:String): RegisterUserResponse
 
         recoveryPassword(email:String!):RecoverPasswordResponse!
         changePassword( password:String!, passwordVerify:String!): ChangePasswordResponse!

@@ -38,7 +38,8 @@
     "express-jwt": "^5.3.1",
     "jwt-decode": "^2.2.0",
     "bcryptjs": "^2.4.3",
-    "pm2": "^3.5.1"
+    "pm2": "^3.5.1",
+    "nodemailer": "^6.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

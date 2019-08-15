@@ -6,6 +6,7 @@ const {errorList, errorMessage} = require('./../../../helpers/sequelize-validati
 const fs = require('fs')
 const path = require('path')
 const randomstring = require('./../../../helpers/randomstring')
+const userEmailManager = require('./../service/UserEmailManager')
 
 module.exports = {
     Query: {
@@ -108,6 +109,34 @@ module.exports = {
                             attributes: ['id', 'name'],
                         }]
                     })
+                }
+            }).catch(Sequelize.ValidationError, function (err) {
+                throw new UserInputError(errorMessage(err), errorList(err));
+            })
+
+
+        },
+
+        registerUser: (parent, {username, password, name, email, phone}, {db}, info) => {
+
+            let salt = bcrypt.genSaltSync(10);
+            let hash = bcrypt.hashSync(password, salt);
+
+            let active = false;
+            let roleId = 1;
+
+            return db.User.create({
+                username: username,
+                password: hash,
+                name: name,
+                email: email,
+                phone: phone,
+                active: active,
+                role_id: roleId
+            }).then(u => {
+                userEmailManager.activation(u.email)
+                return {
+                   status : true, id: u.id, email: u.email
                 }
             }).catch(Sequelize.ValidationError, function (err) {
                 throw new UserInputError(errorMessage(err), errorList(err));
